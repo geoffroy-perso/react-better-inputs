@@ -8,12 +8,12 @@
     "url": "https://github.com/kushuh"
   },
   "description": "Handsome input components for React.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "dependencies": {
-    "kushuh-react-utils": "^1.4.0",
+    "kushuh-react-utils": "^1.4.2",
     "react": "^16.13.1",
-    "react-better-containers": "^1.0.9",
+    "react-better-containers": "^1.1.0",
     "react-dom": "^16.13.1"
   },
   "repository": {

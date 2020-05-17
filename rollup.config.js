@@ -13,7 +13,9 @@ export default [
 		output: [
 			{
 				file: pkg.main,
-				format: 'cjs'
+				format: 'umd',
+				globals: { react: 'React' },
+				name: 'BetterInputs'
 			}
 		],
 		external: [

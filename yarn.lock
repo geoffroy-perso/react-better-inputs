@@ -3842,10 +3842,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-kushuh-react-utils@^1.2.9, kushuh-react-utils@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/kushuh-react-utils/-/kushuh-react-utils-1.4.0.tgz#99ddfb23aadfb608b0aa0e1bc793fbec4620d53d"
-  integrity sha512-fZcHqnS00V5wcBxNDrltnM6v4YVEbCniGYXNmCIIRAobFqTaQ71XSCWIyGVIywUC5F1h6vXwQf2KUYLnlOFSdQ==
+kushuh-react-utils@^1.2.9, kushuh-react-utils@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/kushuh-react-utils/-/kushuh-react-utils-1.4.2.tgz#f8ffa4cbc65869898adb17cbfd4f62483d996b7f"
+  integrity sha512-Q47dJzbaLZS112ZUZ0Q+7iYA1hbAObmCZIkwA53puzeW+ATvpguUdqu3dNoafGKKw0x8GKkoqsACCkiuaIBx2Q==
   dependencies:
     react "^16.13.1"
 
@@ -4945,10 +4945,10 @@ randexp@0.4.6:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
 
-react-better-containers@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/react-better-containers/-/react-better-containers-1.0.9.tgz#30833e114622736565c1e0113df46b9a148b6d59"
-  integrity sha512-43JIToiYysCcTshvnJ/Tdjg1OV10E49BBN9FkoYptkv2rDplNveRfJim/bLbWLhi3d+Jwhg+sv1z0buc5HHmBA==
+react-better-containers@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-better-containers/-/react-better-containers-1.1.0.tgz#a720439282b4d14437ace59710d99a688605396d"
+  integrity sha512-8Oz896dINksYmQKDzkc4gUtcZW2bXn4MXMidBjPT/XruUCo+zKVlwvlMdi6dLM5covRXrzOoVG8RrKqfw5EZQQ==
   dependencies:
     "@types/react-dom" "^16.9.8"
     kushuh-react-utils "^1.2.9"
