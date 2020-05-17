@@ -81,7 +81,7 @@ onChange implementation is slightly different from the one implemented by DOM.
 First, it runs asynchronously, for better sync with your modifications in the DOM.
 Thus, postComputing operation (such as ensuring correct caret position, which can jump due to React implementation) will only occur once the value was successfully updated.
 
-Note it is your duty to ensure that any async operation is as short as possible, to avoid some lags on user side.
+Note it is your duty to ensure that any async operation remains as short as possible, to avoid some lags on user side.
 Async implementation is only useful to enforce synchronization for short operation that can take a bit longer to fulfill. 
 Avoid operations longer than 50ms (such as network calls).
 
@@ -92,9 +92,9 @@ Instead of receiving an event, you receive the following arguments:
 
 | argument | type | description |
 | :--- | :--- | :--- |
-| value | string or number | Equivalent of evt.target.value . |
+| value | string or number | Equivalent to evt.target.value . |
 | options | object | Some useful information. |
-| options.event | HTMLElement | The full evt object. |
+| options.event | Event | The full evt object. |
 | options.overflow | boolean | Custom flag to indicate value was updated above the maximum limit, before being capped. |
 
 Note any custom onChange function should return a string, with an updated value.
