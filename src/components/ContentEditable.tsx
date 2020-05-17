@@ -82,14 +82,13 @@ class ContentEditable extends React.Component<Props, State> {
      */
     controlContent: (e: InputEvent) => void = (e: InputEvent) => {
         e.preventDefault();
-        const {data} = e;
+        const {data, target} = e;
 
         /**
          * ContentEditable content is always spanned.
          */
-        const {current} = this.ref;
-        const {innerText} = current;
-        const {absolute: position} = getSelectionRange(current);
+        const {innerText} = target as HTMLElement;
+        const {absolute: position} = getSelectionRange(target as HTMLElement);
 
         const value = spliceString(innerText, position.start, position.end, data != null ? data.toString() : '');
         this.updateHandler(value, position.start, position.start);
@@ -104,9 +103,8 @@ class ContentEditable extends React.Component<Props, State> {
         e.preventDefault();
         const data = (e.clipboardData || e.clipboardData).getData('text') || '';
 
-        const {current} = this.ref;
-        const {innerText} = current;
-        const {absolute: position} = getSelectionRange(current);
+        const {innerText} = e.target as HTMLElement;
+        const {absolute: position} = getSelectionRange(e.target as HTMLElement);
 
         const value = spliceString(innerText, position.start, position.end, data != null ? data.toString() : '');
         this.updateHandler(value, position.start + data.length, position.start + data.length);
@@ -120,9 +118,8 @@ class ContentEditable extends React.Component<Props, State> {
     controlCut: (e: ClipboardEvent) => void = (e: ClipboardEvent) => {
         e.preventDefault();
 
-        const {current} = this.ref;
-        const {absolute: position} = getSelectionRange(current);
-        const {innerText} = current;
+        const {absolute: position} = getSelectionRange(e.target as HTMLElement);
+        const {innerText} = e.target as HTMLElement;
 
         const value = spliceString(innerText, position.start, position.end, '');
         const selection = document.getSelection();
@@ -137,8 +134,8 @@ class ContentEditable extends React.Component<Props, State> {
         if (key === 'Backspace') {
             e.preventDefault();
 
-            const {innerText} = this.ref.current;
-            const {absolute: position} = getSelectionRange(this.ref.current);
+            const {innerText} = e.target as HTMLElement;
+            const {absolute: position} = getSelectionRange(e.target as HTMLElement);
 
             if (position.end > 0) {
                 const rangeLength = position.start === position.end ? 1 : position.end - position.start;
