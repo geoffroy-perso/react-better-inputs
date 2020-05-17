@@ -29,7 +29,7 @@ class Input extends React.Component<Props, {}> {
      */
     handleChange: (e: ChangeEvent) => Promise<string | number> = (e: ChangeEvent) => new Promise(
         async (resolve, reject) => {
-            const {value, selectionStart, selectionEnd} = e.target as HTMLInputElement;
+            const {value, selectionStart, selectionEnd} = this.ref.current;
             const {onChange, preventPostComputing, maxLength} = this.props;
 
             /**
@@ -64,7 +64,7 @@ class Input extends React.Component<Props, {}> {
                  * Recalibrate caret position after changes.
                  */
                 if (!preventPostComputing) {
-                    (e.target as HTMLInputElement).setSelectionRange(selectionStart, selectionEnd);
+                    (this.ref.current).setSelectionRange(selectionStart, selectionEnd);
                 }
 
                 resolve(slicedValue);
