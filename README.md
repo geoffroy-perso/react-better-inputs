@@ -129,7 +129,7 @@ while handling complex child tree beneath (which is the goal of a contenteditabl
 ```
 
 | Parameter | Type | Required | default | Description |
-| :--- | :--- | :--- | :--- |
+| :--- | :--- | :--- | :--- | :--- |
 | onChange | Function | true | - | Change Handler. **(1)** |
 | preventPostComputing | boolean | - | false | Prevent post computing on update (such as reseting caret position). |
 | linear | boolean | - | false | Make the input linear (non linear input behaves like textarea component). |
