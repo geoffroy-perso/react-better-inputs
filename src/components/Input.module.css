@@ -1,0 +1,6 @@
+.autosize {
+    overflow: hidden;
+    resize: none;
+    transition: height linear 0s, width linear 0s, all initial;
+    box-sizing: border-box;
+}
