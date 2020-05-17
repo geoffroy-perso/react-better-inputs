@@ -62,7 +62,7 @@ class ContentEditable extends React.Component<Props, State> {
             selectionEnd: number
         ) => {
             const {onChange, maxLength} = this.props;
-            const overflows = value && (
+            const overflows = value != null && (
                 (typeof value === 'string' ? value.length : value) > maxLength
             );
 
@@ -102,7 +102,7 @@ class ContentEditable extends React.Component<Props, State> {
      */
     controlPaste: (e: ClipboardEvent) => void = (e: ClipboardEvent) => {
         e.preventDefault();
-        const data = (e.clipboardData || e.clipboardData).getData('text');
+        const data = (e.clipboardData || e.clipboardData).getData('text') || '';
 
         const {current} = this.ref;
         const {innerText} = current;
