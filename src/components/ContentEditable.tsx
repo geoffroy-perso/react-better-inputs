@@ -13,6 +13,7 @@ interface Props {
     selection?: State;
     onChange?: (value: string | number, options: ChangeStats) => (string | number | Promise<string | number>);
     maxLength?: number;
+    preventPostComputing?: boolean;
     linear?: boolean;
     placeholderCss?: string;
     [s: string]: any;
@@ -69,7 +70,9 @@ class ContentEditable extends React.Component<Props, State> {
                 await onChange(value, {overflows, target: this.ref.current});
             }
 
-            this.setState({selectionStart, selectionEnd});
+            if (!this.props.preventPostComputing) {
+                this.setState({selectionStart, selectionEnd});
+            }
         };
 
     /**

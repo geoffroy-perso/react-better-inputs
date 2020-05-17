@@ -4,7 +4,7 @@ import css from './Input.module.css';
 import {Text} from 'react-better-containers';
 
 interface ChangeStats {
-    target: Element | HTMLElement;
+    event: Event | ChangeEvent | InputEvent;
     overflows: boolean;
 }
 
@@ -57,7 +57,7 @@ class Input extends React.Component<Props, {}> {
                  * Apply user onChange function to value before update.
                  */
                 if (onChange != null) {
-                    slicedValue = await onChange(slicedValue, {target: e.target, overflows});
+                    slicedValue = await onChange(slicedValue, {event: e, overflows});
                 }
 
                 /**
@@ -109,7 +109,6 @@ class Input extends React.Component<Props, {}> {
         const {
             className,
             tag,
-            long,
             autosize,
             value,
             rows,
@@ -128,7 +127,7 @@ class Input extends React.Component<Props, {}> {
                 minLength={minLength || 0}
                 // Minimal textarea height, avoid null heights for autoSized inputs.
                 rows={rows || 1}
-                tag={tag || ((long || autosize) ? 'textarea' : 'input')}
+                tag={tag || (autosize ? 'textarea' : 'input')}
                 className={`${autosize ? css.autosize : ''} ${className || ''}`}
                 onChange={this.handleChange}
                 value={value}
