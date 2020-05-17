@@ -31,7 +31,7 @@ export default [
 			postcss({
 				plugins: [autoprefixer()],
 				sourceMap: true,
-				extract: true,
+				extract: false,
 				minimize: true
 			}),
 			terser() // minifies generated bundles
