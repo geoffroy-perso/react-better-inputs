@@ -16,6 +16,7 @@ interface Props {
     preventPostComputing?: boolean;
     keepOverflow?: boolean;
     linear?: boolean;
+    tag?: string;
     placeholderCss?: string;
     [s: string]: any;
 }
@@ -179,12 +180,13 @@ class ContentEditable extends React.Component<Props, State> {
             placeholderCss,
             linear,
             maxLength,
+            tag,
             ...props
         } = this.props;
 
         return (
             <Text
-                tag='div'
+                tag={tag || 'div'}
                 onBeforeInput={this.controlContent}
                 onPaste={this.controlPaste}
                 onCut={this.controlCut}

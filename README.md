@@ -79,7 +79,7 @@ Basic input element. Every input props is available, plus some extra ones.
 | onChange | Function | true | - | Change Handler. **(1)** |
 | autosize | boolean | - | false | Let textarea inputs sync their height automatically with the content inside. |
 | preventPostComputing | boolean | - | false | Prevent post computing on update (such as reseting caret position). |
-| tag | string | - | 'input'<br/>'autosize' | A custom HTML tag to enforce (example 'textarea'). |
+| tag | string | - | 'input'<br/>'textarea' (w. autosize = true) | A custom HTML tag to enforce (example 'textarea'). |
 | keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically capped. |
 
  **(1)** onChange implementation is slightly different from the one implemented by DOM.
@@ -103,6 +103,14 @@ Instead of receiving an event, you receive the following arguments:
 | options.overflow | boolean | Custom flag to indicate value was updated above the maximum limit, before being capped. |
 
 Note any custom onChange function should return a string, with an updated value.
+
+```javascript
+const onChange = async (value, options) => {
+  // Do some stuff.
+  
+  return newValue;
+};
+```
 
 ### ContentEditable
 
@@ -130,6 +138,7 @@ while handling complex child tree beneath (which is the goal of a contenteditabl
 | selection.selectionStart | number | - | - | Range start. |
 | selection.selectionEnd | number | - | - | Range end. |
 | keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically capped. |
+| tag | string | - | 'div' | A custom HTML tag to enforce (example 'textarea'). |
 
 **(1)** Receives a value as a parameter and isn't expected to return anything. It can be async, in which case postComputing will be postponed until value gets updated.
 
