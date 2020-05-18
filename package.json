@@ -8,12 +8,12 @@
     "url": "https://github.com/kushuh"
   },
   "description": "Handsome input components for React.",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": false,
   "dependencies": {
-    "kushuh-react-utils": "^1.4.2",
+    "kushuh-react-utils": "^1.4.3",
     "react": "^16.13.1",
-    "react-better-containers": "^1.1.0",
+    "react-better-containers": "^1.1.1",
     "react-dom": "^16.13.1"
   },
   "repository": {
@@ -79,13 +79,13 @@
     "@babel/preset-react": "^7.9.4",
     "@jest/globals": "^26.0.1",
     "@types/react": "^16.9.34",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "autoprefixer": "^9.8.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "jest": "^26.0.1",
-    "rollup": "^2.10.2",
+    "rollup": "^2.10.3",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-postcss": "^3.1.1",
     "rollup-plugin-terser": "^5.3.0",
