@@ -12,7 +12,9 @@ interface Props extends React.ComponentProps<any> {
     innerRef?: ((instance: any) => void) | React.MutableRefObject<any> | null;
     onChange?: (value: string | number, options: ChangeStats) => (string | number | Promise<string | number>);
     preventPostComputing?: boolean;
+    keepOverflow?: boolean;
     maxLength?: number;
+    max?: number;
     autosize?: boolean;
     [s: string]: any;
 }
@@ -30,7 +32,7 @@ class Input extends React.Component<Props, {}> {
     handleChange: (e: ChangeEvent) => Promise<string | number> = (e: ChangeEvent) => new Promise(
         async (resolve, reject) => {
             const {value, selectionStart, selectionEnd} = this.ref.current;
-            const {onChange, preventPostComputing, maxLength} = this.props;
+            const {onChange, preventPostComputing, maxLength, max, keepOverflow} = this.props;
 
             /**
              * Limit entry value.
@@ -41,13 +43,13 @@ class Input extends React.Component<Props, {}> {
             if (maxLength) {
                 if (value && typeof value === 'string') {
                     overflows = value.length > maxLength;
-                    if (overflows) {
+                    if (overflows && !keepOverflow) {
                         slicedValue = value.slice(0, maxLength);
                     }
                 } else if (value && typeof value === 'number') {
-                    overflows = value > maxLength;
-                    if (overflows) {
-                        slicedValue = maxLength;
+                    overflows = max != null && value > max;
+                    if (overflows && !keepOverflow) {
+                        slicedValue = max;
                     }
                 }
             }

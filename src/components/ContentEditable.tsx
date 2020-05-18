@@ -14,6 +14,7 @@ interface Props {
     onChange?: (value: string | number, options: ChangeStats) => (string | number | Promise<string | number>);
     maxLength?: number;
     preventPostComputing?: boolean;
+    keepOverflow?: boolean;
     linear?: boolean;
     placeholderCss?: string;
     [s: string]: any;
@@ -52,19 +53,21 @@ class ContentEditable extends React.Component<Props, State> {
      * @param selectionEnd
      */
     updateHandler: (
-        value: string | number,
+        value: string,
         selectionStart: number,
         selectionEnd: number
     ) => void =
         async (
-            value: string | number,
+            value: string,
             selectionStart: number,
             selectionEnd: number
         ) => {
-            const {onChange, maxLength} = this.props;
-            const overflows = value != null && (
-                (typeof value === 'string' ? value.length : value) > maxLength
-            );
+            const {onChange, maxLength, keepOverflow} = this.props;
+            const overflows = value != null && value.length  > maxLength;
+
+            if (overflows && !keepOverflow) {
+                value = value.slice(0, maxLength);
+            }
 
             if (onChange != null) {
                 await onChange(value, {overflows, target: this.ref.current});
@@ -82,15 +85,16 @@ class ContentEditable extends React.Component<Props, State> {
      */
     controlContent: (e: InputEvent) => void = (e: InputEvent) => {
         e.preventDefault();
-        const {data, target} = e;
+        const {data} = e;
 
         /**
          * ContentEditable content is always spanned.
          */
-        const {innerText} = target as HTMLElement;
-        const {absolute: position} = getSelectionRange(target as HTMLElement);
+        const {current} = this.ref;
+        const target = current.childNodes[0];
+        const {absolute: position} = getSelectionRange(target);
 
-        const value = spliceString(innerText, position.start, position.end, data != null ? data.toString() : '');
+        const value = spliceString(target.innerText, position.start, position.end, data != null ? data.toString() : '');
         this.updateHandler(value, position.start, position.start);
     };
 
@@ -103,10 +107,11 @@ class ContentEditable extends React.Component<Props, State> {
         e.preventDefault();
         const data = (e.clipboardData || e.clipboardData).getData('text') || '';
 
-        const {innerText} = e.target as HTMLElement;
-        const {absolute: position} = getSelectionRange(e.target as HTMLElement);
+        const {current} = this.ref;
+        const target = current.childNodes[0];
+        const {absolute: position} = getSelectionRange(target);
 
-        const value = spliceString(innerText, position.start, position.end, data != null ? data.toString() : '');
+        const value = spliceString(target.innerText, position.start, position.end, data != null ? data.toString() : '');
         this.updateHandler(value, position.start + data.length, position.start + data.length);
     };
 
@@ -118,10 +123,11 @@ class ContentEditable extends React.Component<Props, State> {
     controlCut: (e: ClipboardEvent) => void = (e: ClipboardEvent) => {
         e.preventDefault();
 
-        const {absolute: position} = getSelectionRange(e.target as HTMLElement);
-        const {innerText} = e.target as HTMLElement;
+        const {current} = this.ref;
+        const target = current.childNodes[0];
+        const {absolute: position} = getSelectionRange(target);
 
-        const value = spliceString(innerText, position.start, position.end, '');
+        const value = spliceString(target.innerText, position.start, position.end, '');
         const selection = document.getSelection();
         e.clipboardData.setData('text/plain', selection.toString());
 
@@ -134,13 +140,14 @@ class ContentEditable extends React.Component<Props, State> {
         if (key === 'Backspace') {
             e.preventDefault();
 
-            const {innerText} = e.target as HTMLElement;
-            const {absolute: position} = getSelectionRange(e.target as HTMLElement);
+            const {current} = this.ref;
+            const target = current.childNodes[0];
+            const {absolute: position} = getSelectionRange(target);
 
             if (position.end > 0) {
-                const rangeLength = position.start === position.end ? 1 : position.end - position.start;
                 const rangeLow = position.start === position.end ? position.start - 1 : position.start;
-                const value = spliceString(innerText, rangeLow, rangeLow + rangeLength, '');
+                const rangeHigh = position.start === position.end ? position.start + 1 : position.end;
+                const value = spliceString(target.innerText, rangeLow, rangeHigh, '');
                 const caretPosition = position.start === position.end ? position.start - 2 : position.start - 1;
 
                 this.updateHandler(value, caretPosition, caretPosition);
@@ -191,12 +198,13 @@ class ContentEditable extends React.Component<Props, State> {
                 }
                 {...props}
             >
+                <span children={children}/>
                 {
                     children != null &&
                     // @ts-ignore
                     (['Array', 'String'].includes(children.constructor.name) ? children.length > 0 : true) ?
                         // @ts-ignore
-                        <Spanner children={children}/> :
+                        null :
                         <Text tag='div' className={`${css.placeholder} ${placeholderCss}`} children={placeholder}/>
                 }
             </Text>

@@ -55,7 +55,7 @@ React Better Inputs contains some useful React Input components.
 
 ### Input
 
-Basic input element.
+Basic input element. Every input props is available, plus some extra ones.
 
 ```jsx
 <Input
@@ -70,14 +70,19 @@ Basic input element.
   autosize={false}
   preventPostComputing={false}
   maxLength={50}
+  keepOverflow={false}
 />
 ```
 
-Behave almost like a basic input, with some React specific wrappers:
+| Parameter | Type | Required | default | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| onChange | Function | true | - | Change Handler. **(1)** |
+| autosize | boolean | - | false | Let textarea inputs sync their height automatically with the content inside. |
+| preventPostComputing | boolean | - | false | Prevent post computing on update (such as reseting caret position). |
+| tag | string | - | 'input'<br/>'autosize' | A custom HTML tag to enforce (example 'textarea'). |
+| keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically capped. |
 
-#### onChange
-
-onChange implementation is slightly different from the one implemented by DOM.
+ **(1)** onChange implementation is slightly different from the one implemented by DOM.
 First, it runs asynchronously, for better sync with your modifications in the DOM.
 Thus, postComputing operation (such as ensuring correct caret position, which can jump due to React implementation) will only occur once the value was successfully updated.
 
@@ -90,7 +95,7 @@ onChange can be a classic sync function.
 Other point of this implementation is that it passes some different arguments to your `onChange()` custom function.
 Instead of receiving an event, you receive the following arguments:
 
-| argument | type | description |
+| Argument | Type | Description |
 | :--- | :--- | :--- |
 | value | string or number | Equivalent to evt.target.value . |
 | options | object | Some useful information. |
@@ -98,19 +103,6 @@ Instead of receiving an event, you receive the following arguments:
 | options.overflow | boolean | Custom flag to indicate value was updated above the maximum limit, before being capped. |
 
 Note any custom onChange function should return a string, with an updated value.
-
-#### autosize
-
-Let textarea inputs sync their height automatically with the content inside.
-
-#### preventPostComputing
-
-Post computing implies cancelling caret jumps (and maybe some other operation later).
-It can be disabled with this flag.
-
-#### tag
-
-A custom HTML tag to enforce (example 'textarea').
 
 ### ContentEditable
 
@@ -137,6 +129,7 @@ while handling complex child tree beneath (which is the goal of a contenteditabl
 | selection | object | - | - | Mount the component with an inner selection range. |
 | selection.selectionStart | number | - | - | Range start. |
 | selection.selectionEnd | number | - | - | Range end. |
+| keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically capped. |
 
 **(1)** Receives a value as a parameter and isn't expected to return anything. It can be async, in which case postComputing will be postponed until value gets updated.
 
