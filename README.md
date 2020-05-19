@@ -40,11 +40,11 @@
 
 ## About
 
-React Better Inputs contains some useful React Input components.
+React Better Inputs enhances input implementation by React. It contains some alternative components to use in place of regular DOM inputs.
 
-ℹ Every DOM property of input components is compatible with the following React Class Components.
+ℹ️ Every DOM property of input components is compatible with the following React Class Components.
 
-## Components
+## Navigation
 
 + **[Components](#components)**
     + [Input](#input)
@@ -55,34 +55,25 @@ React Better Inputs contains some useful React Input components.
 
 ### Input
 
-Basic input element. Every input props is available, plus some extra ones.
+> Alternative implementation of <input/> component.
 
 ```jsx
-<Input
-  // Required.
-  value={data.email}
-  // Not required but usual.
-  placeholder='example@provider.domain'
-  name='email'
-  onChange={this.updateEmail}
-  // Optional.
-  tag='input'
-  autosize={false}
-  preventPostComputing={false}
-  maxLength={50}
-  keepOverflow={false}
-/>
+// Uncontrolled input.
+<Input value={data.email}/>
 ```
+
+ℹ️ Below is a list of parameters that either are specific to this component,
+or that have a different implementation from the base component.
 
 | Parameter | Type | Required | default | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | onChange | Function | true | - | Change Handler. **(1)** |
 | autosize | boolean | - | false | Let textarea inputs sync their height automatically with the content inside. |
 | preventPostComputing | boolean | - | false | Prevent post computing on update (such as reseting caret position). |
-| tag | string | - | 'input'<br/>'textarea' (w. autosize = true) | A custom HTML tag to enforce (example 'textarea'). |
-| keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically capped. |
+| tag | string | - | 'input'<br/>'textarea' (with autosize = true) | A custom HTML tag to enforce (example 'textarea'). |
+| keepOverflow | boolean | - | false | If content overflows maximum value, it will not be automatically cropped. |
 
- **(1)** onChange implementation is slightly different from the one implemented by DOM.
+ **(1)** onChange implementation is slightly different from the one in the DOM.
 First, it runs asynchronously, for better sync with your modifications in the DOM.
 Thus, postComputing operation (such as ensuring correct caret position, which can jump due to React implementation) will only occur once the value was successfully updated.
 
@@ -122,7 +113,7 @@ while handling complex child tree beneath (which is the goal of a contenteditabl
 <ContentEditable
   maxLength={300}
   onChange={this.onChange}
-  placeholder={'Enter your text.'}
+  placeholder={<div>'Enter your text.'</div>}
 >
   <Label>selector:</Label>my <span style={{color: 'blue'}}>text</span>
 </ContentEditable>
@@ -141,6 +132,19 @@ while handling complex child tree beneath (which is the goal of a contenteditabl
 | tag | string | - | 'div' | A custom HTML tag to enforce (example 'textarea'). |
 
 **(1)** Receives a value as a parameter and isn't expected to return anything. It can be async, in which case postComputing will be postponed until value gets updated.
+
+```javascript
+const onChange = (value, options) => {
+  // Do stuff.
+};
+```
+
+| Argument | Type | Description |
+| :--- | :--- | :--- |
+| value | string or number | Equivalent to evt.target.value . |
+| options | object | Some useful information. |
+| options.event | Event | The full evt object. |
+| options.overflow | boolean | Custom flag to indicate value was updated above the maximum limit, before being capped. |
 
 **(2)** Not that unlike ::placeholder selector on input elements, a contenteditable placeholder has almost every customization options available, like a regular DOM element.
 

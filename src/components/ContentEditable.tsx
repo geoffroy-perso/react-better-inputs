@@ -4,7 +4,7 @@ import {Text, Spanner} from 'react-better-containers';
 import css from './ContentEditable.module.css';
 
 interface ChangeStats {
-    target: Element | HTMLElement;
+    event: Event;
     overflows: boolean;
 }
 
@@ -52,16 +52,19 @@ class ContentEditable extends React.Component<Props, State> {
      * @param value
      * @param selectionStart
      * @param selectionEnd
+     * @param e
      */
     updateHandler: (
         value: string,
         selectionStart: number,
-        selectionEnd: number
+        selectionEnd: number,
+        e: Event
     ) => void =
         async (
             value: string,
             selectionStart: number,
-            selectionEnd: number
+            selectionEnd: number,
+            e: Event
         ) => {
             const {onChange, maxLength, keepOverflow} = this.props;
             const overflows = value != null && value.length  > maxLength;
@@ -71,7 +74,7 @@ class ContentEditable extends React.Component<Props, State> {
             }
 
             if (onChange != null) {
-                await onChange(value, {overflows, target: this.ref.current});
+                await onChange(value, {overflows, event: e});
             }
 
             if (!this.props.preventPostComputing) {
@@ -98,7 +101,7 @@ class ContentEditable extends React.Component<Props, State> {
         const caretPosition = position.start === position.end ? position.start + 1 : position.start;
 
         const value = spliceString(target.innerText, position.start, position.end, data != null ? data.toString() : '');
-        this.updateHandler(value, caretPosition, caretPosition);
+        this.updateHandler(value, caretPosition, caretPosition, e);
     };
 
     /**
@@ -115,7 +118,7 @@ class ContentEditable extends React.Component<Props, State> {
         const {absolute: position} = getSelectionRange(target);
 
         const value = spliceString(target.innerText, position.start, position.end, data != null ? data.toString() : '');
-        this.updateHandler(value, position.start + data.length, position.start + data.length);
+        this.updateHandler(value, position.start + data.length, position.start + data.length, e);
     };
 
     /**
@@ -134,7 +137,7 @@ class ContentEditable extends React.Component<Props, State> {
         const selection = document.getSelection();
         e.clipboardData.setData('text/plain', selection.toString());
 
-        this.updateHandler(value, position.start, position.start);
+        this.updateHandler(value, position.start, position.start, e);
     };
 
     controlSpecialKeys: (e: KeyboardEvent) => void = (e: KeyboardEvent) => {
@@ -147,15 +150,13 @@ class ContentEditable extends React.Component<Props, State> {
             const target = current.childNodes[0];
             const {absolute: position} = getSelectionRange(target);
 
-            console.log(position);
-
             if (position.end > 0) {
                 const rangeLow = position.start === position.end ? position.start - 1 : position.start;
                 const rangeHigh = position.start === position.end ? position.start : position.end;
                 const value = spliceString(target.innerText, rangeLow, rangeHigh, '');
                 const caretPosition = position.start === position.end ? position.start - 1 : position.start;
 
-                this.updateHandler(value, caretPosition, caretPosition);
+                this.updateHandler(value, caretPosition, caretPosition, e);
             }
         }
     };
